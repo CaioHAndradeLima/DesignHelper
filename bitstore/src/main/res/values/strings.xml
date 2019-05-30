@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">bitstore</string>
+
+    <string name="know_bitstore_carousel_1">Use seus cupons para dar like nos produtos que gostar!</string>
+    <string name="know_bitstore_carousel_2">Receba a moeda digital governamental pela compra do produto: <b> Bolso Cash </b></string>
+    <string name="know_bitstore_carousel_3">Use o Bolso Cash para fazer compras sem pagar nada!</string>
+
+    <string name="getting_start_now">Começar agora</string>
+    <string name="know_bitstore">Conheça BitStore</string>
+
+    <string name="component_chp_tap_message">Toque para inserir a imagem</string>
+    <string name="without_connection">Sem conexão</string>
+    <string name="without_connection_description">Verifique a conectividade</string>
+    <string name="activity_photo_title">Novo Produto</string>
+
+</resources>

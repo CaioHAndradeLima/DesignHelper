@@ -1,0 +1,68 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.CaioHAndradeLima'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    def applicationDependencies = rootProject.ext.mainApplication
+    def unitTestDependencies = rootProject.ext.unitTesting
+    def integrationTestDependencies = rootProject.ext.integrationTesting
+
+    implementation applicationDependencies.kotlin
+
+    // Android Dependencies
+    implementation applicationDependencies.appCompat
+    implementation applicationDependencies.constraintLayout
+    implementation applicationDependencies.cardView
+
+    // Google Services
+    implementation applicationDependencies.materialDesign
+
+    //reactx programming
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+
+    // Unit Testing
+    testImplementation unitTestDependencies.junit
+
+    // Integration Testing
+    androidTestImplementation integrationTestDependencies.runner
+    androidTestImplementation integrationTestDependencies.espresso
+
+    implementation applicationDependencies.retrofit
+    implementation applicationDependencies.glide
+
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'com.github.CaioHenriqueAndrade:auxiliarPhoto:1.0.9'
+
+    implementation 'com.yanzhenjie:album:2.1.3'
+}
