@@ -29,7 +29,7 @@ object CpfCnpjValidate {
     fun isValidCPF(cpf: String?): Boolean {
         var cpf = cpf
         cpf = cpf!!.trim { it <= ' ' }.replace(".", "").replace("-", "")
-        if (cpf == null || cpf.length != 11) return false
+        if (cpf == null || cpf.length != 11 || !cpf.matches("[0-9]+".toRegex())) return false
 
         for (j in 0..9)
             if (padLeft(Integer.toString(j), Character.forDigit(j, 10)) == cpf)
@@ -43,10 +43,11 @@ object CpfCnpjValidate {
     private fun isValidCNPJ(cnpj: String?): Boolean {
         var cnpj = cnpj
         cnpj = cnpj!!.trim { it <= ' ' }.replace(".", "").replace("-", "")
-        if (cnpj == null || cnpj.length != 14) return false
+        if (cnpj == null || cnpj.length != 14 || !cnpj.matches("[0-9]+".toRegex())) return false
 
         val digito1 = calcularDigito(cnpj.substring(0, 12), pesoCNPJ)
         val digito2 = calcularDigito(cnpj.substring(0, 12) + digito1, pesoCNPJ)
         return cnpj == cnpj.substring(0, 12) + digito1.toString() + digito2.toString()
     }
+
 }
