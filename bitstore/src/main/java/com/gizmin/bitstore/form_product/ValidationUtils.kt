@@ -1,5 +1,7 @@
 package com.gizmin.bitstore.form_product
 
+import android.text.TextUtils
+import com.gizmin.bitstore.form_product.utils.CpfCnpjValidate
 import java.util.*
 
 object ValidationUtils {
@@ -10,4 +12,7 @@ object ValidationUtils {
         false
     }
 
+    fun isEmail(target: CharSequence) : Boolean = !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()
+
+    fun isCpfOrCnpj(text : String) = CpfCnpjValidate.isValidCPF(text)
 }
