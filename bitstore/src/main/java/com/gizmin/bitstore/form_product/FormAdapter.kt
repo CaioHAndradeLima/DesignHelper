@@ -21,30 +21,30 @@ import java.lang.RuntimeException
 import java.util.concurrent.TimeUnit
 
 
-open class FormAdapter(protected val list: Array<FormProductView>,
-                       protected val ac: AppCompatActivity
+open class FormAdapter(
+    protected val list: Array<FormProductView>,
+    protected val ac: AppCompatActivity
 ) : FragmentPagerAdapter(
-        ac.supportFragmentManager
-) {
-
+    ac.supportFragmentManager
+), FormAdapterFunctions {
     var isShowingKeyboard = true
 
-    val map = HashMap<Int,String>()
+    val map = HashMap<Int, String>()
 
     companion object {
         fun <T : AppCompatActivity> init(activity: T) {
             if (activity is FormMethods) {
                 activity.getViewPager().setPageTransformer(false, AccordionTransformer())
                 activity.getViewPager().adapter = FormAdapter(
-                        list = activity.getListFormView(),
-                        ac = activity
+                    list = activity.getListFormView(),
+                    ac = activity
                 )
             } else {
                 throw RuntimeException("implement FormMethods in your activity")
             }
         }
 
-        fun <T : AppCompatActivity, Y: FormAdapter> init(activity: T, adapter : Y) {
+        fun <T : AppCompatActivity, Y : FormAdapter> init(activity: T, adapter: Y) {
             if (activity is FormMethods) {
                 activity.getViewPager().setPageTransformer(false, AccordionTransformer())
                 activity.getViewPager().adapter = adapter
@@ -65,22 +65,23 @@ open class FormAdapter(protected val list: Array<FormProductView>,
 
             override fun onPageSelected(position: Int) {
                 val fragment = getFragmentBySupportFragmentManager(
-                        (ac as FormMethods).getViewPager().id,
-                        (ac as FormMethods).getViewPager(),
-                        position = position
+                    (ac as FormMethods).getViewPager().id,
+                    (ac as FormMethods).getViewPager(),
+                    position = position
                 )
 
-                if(fragment is LoadingFragment &&
-                        position == (getCount() - 1)) {
+                if (fragment is LoadingFragment &&
+                    position == (getCount() - 1)
+                ) {
 
                     hideKeyboardFrom(fragment.view!!.rootView)
 
                     (ac as FormMethods)
-                            .whenFinishedForm(
-                                    ((ac as FormMethods)
-                                            .getViewPager()
-                                            .adapter as FormAdapter).map
-                            )
+                        .whenFinishedForm(
+                            ((ac as FormMethods)
+                                .getViewPager()
+                                .adapter as FormAdapter).map
+                        )
 
 
                     return
@@ -92,12 +93,12 @@ open class FormAdapter(protected val list: Array<FormProductView>,
                     if (!isShowingKeyboard) {
                         hideKeyboardFrom(it.editText)
                         Single
-                                .fromCallable { it }
-                                .observeOn(Schedulers.newThread())
-                                .delay(time, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                                .subscribe({
-                                    showForcedKeyboard()
-                                }) { it.printStackTrace() }
+                            .fromCallable { it }
+                            .observeOn(Schedulers.newThread())
+                            .delay(time, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                            .subscribe({
+                                showForcedKeyboard()
+                            }) { it.printStackTrace() }
                     } else {
                         it.editText.requestFocus()
                     }
@@ -109,11 +110,12 @@ open class FormAdapter(protected val list: Array<FormProductView>,
         }
 
         (ac as FormMethods)
-                .getViewPager()
-                .addOnPageChangeListener(onPageChangeListener)
+            .getViewPager()
+            .addOnPageChangeListener(onPageChangeListener)
 
         KeyboardUtils.addKeyboardToggleListener(
-                (ac as FormMethods).getViewPager().context as Activity) {
+            (ac as FormMethods).getViewPager().context as Activity
+        ) {
             isShowingKeyboard = it
         }
 
@@ -137,13 +139,29 @@ open class FormAdapter(protected val list: Array<FormProductView>,
     fun onBackPressed(): Boolean {
         val viewpager = (ac as FormMethods).getViewPager()
         if (viewpager.currentItem != 0) {
-            viewpager.setCurrentItem(viewpager.currentItem - 1, true)
+
+
+            viewpager.setCurrentItem(getPositionToBackWhenTouchedInBack(viewpager.currentItem), true)
             return true
         }
 
         KeyboardUtils.removeAllKeyboardToggleListeners()
         return false
     }
+
+    override fun getPositionToBackWhenTouchedInBack(currentPosition: Int): Int {
+        val fragment = getFragmentBySupportFragmentManager(
+            (ac as FormMethods).getViewPager().id,
+            (ac as FormMethods).getViewPager(),
+            position = currentPosition - 1
+        )
+
+        if (fragment is LoadingFragment)
+            return currentPosition - 2
+
+        return currentPosition - 1
+    }
+
 
     private fun showForcedKeyboard() {
         forceCloseKeyboard(ac)
@@ -152,15 +170,18 @@ open class FormAdapter(protected val list: Array<FormProductView>,
     fun add(currentItem: Int, text: String) {
         map[currentItem] = text
     }
+}
 
+interface FormAdapterFunctions {
+    fun getPositionToBackWhenTouchedInBack(currentPosition: Int): Int
 }
 
 data class FormProductView(
-        val position: Int,
-        val title: String,
-        val nameButton: String,
-        val validation: (sequence: String) -> Boolean,
-        val typeKeyboard: Int = InputTypeUtils.TEXT
+    val position: Int,
+    val title: String,
+    val nameButton: String,
+    val validation: (sequence: String) -> Boolean,
+    val typeKeyboard: Int = InputTypeUtils.TEXT
 )
 
 interface FormMethods {
