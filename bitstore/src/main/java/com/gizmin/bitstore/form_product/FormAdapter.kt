@@ -104,6 +104,7 @@ open class FormAdapter(protected val list: Array<FormProductView>,
                 }
 
                 (fragment as? FormPageSelected)?.onPageSelected()
+                (ac as? FormPageSelectedListener)?.onPageSelected(position)
             }
         }
 
