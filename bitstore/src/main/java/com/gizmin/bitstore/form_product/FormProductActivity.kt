@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_form_product.*
 
 class FormProductActivity : AppCompatActivity(), FormMethods {
     private val listFormProductView by lazy {
-        arrayOf(
+        arrayOf<FormView>(
             FormProductView(0, "Nome do produto", "Continuar", { it.length > 10 }),
             FormProductView(1, "Porcentagem de Cashback do cliente", "Finalizar", { true })
         )
@@ -37,7 +37,7 @@ class FormProductActivity : AppCompatActivity(), FormMethods {
             super.onBackPressed()
     }
 
-    override fun getListFormView(): Array<FormProductView> {
+    override fun getListFormView(): Array<FormView> {
         return listFormProductView
     }
 }

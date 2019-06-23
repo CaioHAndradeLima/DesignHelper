@@ -1,4 +1,4 @@
-package com.gizmin.bitstore.custom_view
+package com.gizmin.bitstore.custom_view.collapse_chose_photo
 
 import android.graphics.Bitmap
 import android.widget.ImageView
@@ -45,7 +45,13 @@ object UtilsLoaderPhoto {
                 .just( file )
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn( Schedulers.computation() )
-                .map { modifyScale( auxPhoto , it , 270 ) }
+                .map {
+                    modifyScale(
+                        auxPhoto,
+                        it,
+                        270
+                    )
+                }
     }
 
     private fun modifyScale(auxPhoto : AuxiliarPhoto, file : File, scale : Int ) : Bitmap? {

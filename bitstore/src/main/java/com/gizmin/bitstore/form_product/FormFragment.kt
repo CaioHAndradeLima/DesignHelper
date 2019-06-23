@@ -12,6 +12,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.gizmin.bitstore.R
+import com.gizmin.bitstore.form_product.utils.clickForm
+import com.gizmin.bitstore.form_product.utils.updateButtonStatus
 import java.lang.IllegalStateException
 
 class FormFragment : Fragment(), TextWatcher {
@@ -32,18 +34,17 @@ class FormFragment : Fragment(), TextWatcher {
     private lateinit var textViewTitle: TextView
     private lateinit var button: Button
     private val formView: FormProductView
-
         get() {
             (activity as FormMethods).getListFormView().forEach {
                 if (arguments!!.getInt(EXTRA_POSITION, 0) == it.position)
-                    return it
+                    return it as FormProductView
             }
 
             throw IllegalStateException()
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.holder_form_product, container, false)
+        val view = inflater.inflate(R.layout.fragment_form_product, container, false)
 
         editText = view.findViewById(R.id.edittext)
         textViewTitle = view.findViewById(R.id.txt_title)
@@ -53,19 +54,7 @@ class FormFragment : Fragment(), TextWatcher {
 
         button.setOnClickListener {
             if (button.isEnabled) {
-
-                val viewPager = (editText.context as FormMethods)
-                        .getViewPager()
-
-                (viewPager.adapter as FormAdapter)
-                        .add(viewPager.currentItem, editText.text.toString())
-
-                if (viewPager.adapter!!.count != viewPager.currentItem - 1) {
-                    viewPager.setCurrentItem(viewPager.currentItem + 1, true)
-                } else {
-                    (editText.context as FormMethods)
-                            .whenFinishedForm((viewPager.adapter as FormAdapter).map)
-                }
+                clickForm(this)
             }
         }
 
@@ -79,28 +68,16 @@ class FormFragment : Fragment(), TextWatcher {
 
     override fun onResume() {
         super.onResume()
-        updateButtonStatus(editText.text.toString())
+        updateButtonStatus(button, formView.validation.invoke(editText.text.toString()))
     }
 
     override fun afterTextChanged(s: Editable?) {
-        updateButtonStatus(s.toString())
+        updateButtonStatus(button, formView.validation.invoke(s.toString()))
     }
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-    }
-
-    fun updateButtonStatus(text : String) {
-        if (formView.validation.invoke(text)) {
-            button.isEnabled = true
-            button.setTextColor(ContextCompat.getColor(editText.context, android.R.color.white))
-            button.setBackgroundColor(ContextCompat.getColor(editText.context, R.color.colorPrimary))
-        } else {
-            button.isEnabled = false
-            button.setTextColor(ContextCompat.getColor(editText.context, android.R.color.white))
-            button.setBackgroundColor(ContextCompat.getColor(editText.context, R.color.grey))
-        }
     }
 }

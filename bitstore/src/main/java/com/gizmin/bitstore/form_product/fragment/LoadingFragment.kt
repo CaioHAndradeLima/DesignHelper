@@ -10,7 +10,7 @@ import com.gizmin.bitstore.R
 class LoadingFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_loading, container, false)
+        return inflater.inflate(R.layout.item_loading, container, false)
     }
 
 }

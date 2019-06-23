@@ -1,4 +1,4 @@
-package com.gizmin.bitstore.custom_view
+package com.gizmin.bitstore.custom_view.collapse_chose_photo
 
 import android.app.Activity
 import android.content.Context
@@ -49,8 +49,10 @@ class CollapseChosePhoto(
 
             val isTheFirstTimeThatUserChosePhoto = !userAlreadyChoseThePhoto()
 
-            UtilsLoaderPhoto
-                .loadBitmapFromInternalPath(listAlbumFile[0].path, auxPhoto)
+            UtilsLoaderPhoto.loadBitmapFromInternalPath(
+                listAlbumFile[0].path,
+                auxPhoto
+            )
                 .doOnNext {
 
                     bitmap = it
@@ -100,9 +102,13 @@ class CollapseChosePhoto(
                 .auxphoto
                 .AuxiliarPhoto(context)
 
-            auxPhoto.saveToInternalStorage(DIRECTORY_TEMPORARY, bitmap, NAME_TEMPORARY, 100)
+            auxPhoto.saveToInternalStorage(
+                DIRECTORY_TEMPORARY, bitmap,
+                NAME_TEMPORARY, 100)
 
-            val f = File("${auxPhoto.path}DIRECTORY_TEMPORARY", NAME_TEMPORARY)
+            val f = File("${auxPhoto.path}DIRECTORY_TEMPORARY",
+                NAME_TEMPORARY
+            )
 
             bitmap = auxPhoto.modifyScaleOfFile(f, decode)
 
@@ -114,7 +120,8 @@ class CollapseChosePhoto(
 
     companion object {
         const val DIRECTORY_TEMPORARY = "TEMPORARY"
-        const val NAME_TEMPORARY = DIRECTORY_TEMPORARY
+        const val NAME_TEMPORARY =
+            DIRECTORY_TEMPORARY
     }
 
     @Deprecated("use now setListenerSuccessPhoto and doesn't call activity result ")

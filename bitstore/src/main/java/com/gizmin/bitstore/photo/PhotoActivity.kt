@@ -3,7 +3,7 @@ package com.gizmin.bitstore.photo
 import android.os.Bundle
 import com.gizmin.bitstore.BaseActivity
 import com.gizmin.bitstore.R
-import com.gizmin.bitstore.custom_view.CollapseChosePhoto
+import com.gizmin.bitstore.custom_view.collapse_chose_photo.CollapseChosePhoto
 import kotlinx.android.synthetic.main.photo_activity.*
 
 class PhotoActivity : BaseActivity() {

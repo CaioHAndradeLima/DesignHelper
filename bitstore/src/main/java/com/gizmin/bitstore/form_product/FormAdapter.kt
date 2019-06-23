@@ -10,6 +10,8 @@ import com.gizmin.bitstore.custom_transform.AccordionTransformer
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerCustomDuration
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerUtils.getFragmentBySupportFragmentManager
 import com.gizmin.bitstore.form_product.fragment.LoadingFragment
+import com.gizmin.bitstore.form_product.fragment.OptionsFormEntity
+import com.gizmin.bitstore.form_product.fragment.OptionsFormFragment
 import com.gizmin.bitstore.form_product.utils.InputTypeUtils
 import com.gizmin.bitstore.util.KeyboardUtils
 import com.gizmin.bitstore.util.KeyboardUtils.forceCloseKeyboard
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit
 
 
 open class FormAdapter(
-    protected val list: Array<FormProductView>,
+    protected val list: Array<FormView>,
     protected val ac: AppCompatActivity
 ) : FragmentPagerAdapter(
     ac.supportFragmentManager
@@ -71,7 +73,7 @@ open class FormAdapter(
                 )
 
                 if (fragment is LoadingFragment &&
-                    position == (getCount() - 1)
+                    position == (count - 1)
                 ) {
 
                     hideKeyboardFrom(fragment.view!!.rootView)
@@ -127,7 +129,13 @@ open class FormAdapter(
 
     override fun getItem(position: Int): Fragment {
 
-        list.forEach { if (position == it.position) return FormFragment.newInstance(it.position) }
+        list.forEach {
+            if (position == it.position)
+                if (it is FormOptionView)
+                    return OptionsFormFragment.newInstance(it)
+                else if (it is FormProductView)
+                    return FormFragment.newInstance(it.position)
+        }
 
         throw IllegalStateException("not implemented $position")
     }
@@ -162,7 +170,6 @@ open class FormAdapter(
         return currentPosition - 1
     }
 
-
     private fun showForcedKeyboard() {
         forceCloseKeyboard(ac)
     }
@@ -176,18 +183,38 @@ interface FormAdapterFunctions {
     fun getPositionToBackWhenTouchedInBack(currentPosition: Int): Int
 }
 
-data class FormProductView(
-    val position: Int,
-    val title: String,
-    val nameButton: String,
+class FormProductView(
+    position: Int,
+    title: String,
+    nameButton: String,
     val validation: (sequence: String) -> Boolean,
     val typeKeyboard: Int = InputTypeUtils.TEXT
+) : FormView(position, title, nameButton)
+
+class FormOptionView(
+    position: Int,
+    title: String,
+    nameButton: String,
+    val listOptions: Array<OptionsFormEntity>
+) : FormView(position, title, nameButton) {
+
+    fun getOptionSelected() : OptionsFormEntity? {
+        listOptions.forEach { if(it.isChecked) return it }
+
+        return null
+    }
+}
+
+open class FormView(
+    val position: Int,
+    val title: String,
+    val nameButton: String
 )
 
 interface FormMethods {
     fun getViewPager(): ViewPagerCustomDuration
     fun whenFinishedForm(map: HashMap<Int, String>)
-    fun getListFormView(): Array<FormProductView>
+    fun getListFormView(): Array<FormView>
 }
 
 
