@@ -32,8 +32,11 @@ open class OptionsFormAdapter(
     fun onClick(positionClick: Int) {
         for (position in 0 until itemCount) {
             val holder = recyclerView.findViewHolderForAdapterPosition(position) as OptionsFormHolder
-            holder.setChecked(positionClick == position)
+            val isChecked = positionClick == position
+            holder.setChecked(isChecked)
+            listOptions[position].isChecked = isChecked
         }
+
         anySelectedListener()
     }
 
