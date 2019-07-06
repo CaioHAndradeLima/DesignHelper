@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 
 
 open class FormAdapter(
-    protected val list: Array<FormView>,
+    protected var list: Array<FormView>,
     protected val ac: AppCompatActivity
 ) : FragmentPagerAdapter(
     ac.supportFragmentManager
@@ -176,6 +176,11 @@ open class FormAdapter(
 
     fun add(currentItem: Int, text: String) {
         map[currentItem] = text
+    }
+
+    fun notifyListDataChanged(listForm: Array<FormView>) {
+        this.list = listForm
+        notifyDataSetChanged()
     }
 }
 
