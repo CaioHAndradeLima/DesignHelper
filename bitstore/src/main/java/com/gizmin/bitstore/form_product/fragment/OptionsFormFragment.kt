@@ -28,12 +28,17 @@ open class OptionsFormFragment : Fragment(), View.OnClickListener {
 
         fun newInstance(formOptions: FormOptionView): OptionsFormFragment {
             val options = OptionsFormFragment()
+            return newInstance(formOptions, options)
+        }
+
+        fun <T : OptionsFormFragment> newInstance(formOptions: FormOptionView, fragment : T ): OptionsFormFragment {
             val arguments = Bundle()
             arguments.putString(EXTRA_OPTIONS, Gson().toJson(formOptions))
-            options.formOptions = formOptions
-            options.arguments = arguments
-            return options
+            fragment.formOptions = formOptions
+            fragment.arguments = arguments
+            return fragment
         }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +86,8 @@ open class OptionsFormFragment : Fragment(), View.OnClickListener {
 }
 
 data class OptionsFormEntity(
-    val optionName: String
+    val optionName: String,
+    val id : Int = 0
 ) {
     var isChecked: Boolean = false
     internal set
