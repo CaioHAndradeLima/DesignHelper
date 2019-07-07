@@ -67,7 +67,6 @@ open class FormAdapter(
 
             override fun onPageSelected(position: Int) {
                 val fragment = getFragmentBySupportFragmentManager(
-                    (ac as FormMethods).getViewPager().id,
                     (ac as FormMethods).getViewPager(),
                     position = position
                 )
@@ -159,7 +158,6 @@ open class FormAdapter(
 
     override fun getPositionToBackWhenTouchedInBack(currentPosition: Int): Int {
         val fragment = getFragmentBySupportFragmentManager(
-            (ac as FormMethods).getViewPager().id,
             (ac as FormMethods).getViewPager(),
             position = currentPosition - 1
         )
