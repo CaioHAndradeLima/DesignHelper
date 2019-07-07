@@ -32,7 +32,7 @@ open class OptionsFormFragment : Fragment(), View.OnClickListener {
         }
 
         fun <T : OptionsFormFragment> newInstance(formOptions: FormOptionView, fragment : T ): T {
-            val arguments = Bundle()
+            val arguments = if(fragment.arguments == null) Bundle() else fragment.arguments!!
             arguments.putString(EXTRA_OPTIONS, Gson().toJson(formOptions))
             fragment.formOptions = formOptions
             fragment.arguments = arguments

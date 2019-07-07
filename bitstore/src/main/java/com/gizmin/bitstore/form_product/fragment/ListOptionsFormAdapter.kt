@@ -3,18 +3,17 @@ package com.gizmin.bitstore.form_product.fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gizmin.bitstore.R
 
-open class OptionsFormAdapter(
+open class ListOptionsFormAdapter(
     private val listOptions: Array<OptionsFormEntity>,
-    private val recyclerView: RecyclerView,
     private val anySelectedListener: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as OptionsFormHolder).bind(listOptions[position])
+        (holder as ListOptionsFormHolder).bind(listOptions[position])
     }
 
     override fun getItemCount(): Int {
@@ -22,19 +21,17 @@ open class OptionsFormAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return OptionsFormHolder(
+        return ListOptionsFormHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.holder_options_form, parent, false),
+                .inflate(R.layout.holder_list_options_form, parent, false),
             this
         )
     }
 
     fun onClick(positionClick: Int) {
         for (position in 0 until itemCount) {
-            val holder = recyclerView.findViewHolderForAdapterPosition(position) as OptionsFormHolder
             val isChecked = positionClick == position
-            holder.setChecked(isChecked)
             listOptions[position].isChecked = isChecked
         }
 
@@ -43,25 +40,24 @@ open class OptionsFormAdapter(
 
 }
 
-class OptionsFormHolder(
+class ListOptionsFormHolder(
     view: View,
-    private val adapter: OptionsFormAdapter
+    private val adapter: ListOptionsFormAdapter
 ) : RecyclerView.ViewHolder(view), View.OnClickListener {
 
+    private val textView: TextView
 
     init {
         itemView.setOnClickListener(this)
+        textView = itemView.findViewById(R.id.textview)
     }
 
     fun bind(optionsFormEntity: OptionsFormEntity) {
-        (itemView as RadioButton).text = optionsFormEntity.optionName
+        textView.text = optionsFormEntity.optionName
     }
 
     override fun onClick(v: View) {
         adapter.onClick(adapterPosition)
     }
 
-    fun setChecked(isChecked: Boolean) {
-        (itemView as RadioButton).isChecked = isChecked
-    }
 }

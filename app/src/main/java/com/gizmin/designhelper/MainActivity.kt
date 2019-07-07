@@ -2,8 +2,6 @@ package com.gizmin.designhelper
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -11,9 +9,6 @@ import com.gizmin.bitstore.custom_view.viewpager.ViewPagerCustomDuration
 import com.gizmin.bitstore.form_product.*
 import com.gizmin.bitstore.form_product.fragment.OptionsFormEntity
 import com.gizmin.bitstore.form_product.fragment.OptionsFormFragment
-import com.gizmin.bitstore.form_product.utils.CpfCnpjValidate.isValid
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.random.Random
 import androidx.viewpager.widget.PagerAdapter
 
 
@@ -23,9 +18,6 @@ class MainActivity : AppCompatActivity(), FormMethods {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        isValid("caio@gmail.c")
-        getViewPager().isSaveFromParentEnabled = false
-        getViewPager().isSaveEnabled = false
         FormAdapter.init(this, CustomAdapter(getListFormView(), this))
     }
 
@@ -38,8 +30,11 @@ class MainActivity : AppCompatActivity(), FormMethods {
 
     override fun getListFormView(): Array<FormView> {
         val list = mutableListOf<FormView>()
-        list.add(FormOptionView(1, "titulo titulo titulo", "continuar", options))
-        list.add(FormProductView(0, "Qual o nome de quem você irá transferir?", "continuar", { true }))
+        list.add(FormOptionView(1, "titulo titulo titulo", "Continuar", options))
+        list.add(FormProductView(0, "Qual o nome de quem você irá transferir?", "Continuar", { true }))
+        list.add(FormListOptionView(3, "Escolha a opcao?", "Continuar", options))
+        list.add(FormProductView(4, "teste?", "Continuar", { true }))
+
 
         return list.toTypedArray()
     }
@@ -86,11 +81,6 @@ class CustomAdapter(list: Array<FormView>, ac: AppCompatActivity) : FormAdapter(
     override fun getItemPosition(`object`: Any): Int {
         // refresh all fragments when data set changed
         return PagerAdapter.POSITION_NONE
-    }
-
-
-    override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        return super.instantiateItem(container, position)
     }
 
     override fun getItemId(position: Int): Long {

@@ -9,9 +9,7 @@ import androidx.viewpager.widget.ViewPager
 import com.gizmin.bitstore.custom_transform.AccordionTransformer
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerCustomDuration
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerUtils.getFragmentBySupportFragmentManager
-import com.gizmin.bitstore.form_product.fragment.LoadingFragment
-import com.gizmin.bitstore.form_product.fragment.OptionsFormEntity
-import com.gizmin.bitstore.form_product.fragment.OptionsFormFragment
+import com.gizmin.bitstore.form_product.fragment.*
 import com.gizmin.bitstore.form_product.utils.InputTypeUtils
 import com.gizmin.bitstore.util.KeyboardUtils
 import com.gizmin.bitstore.util.KeyboardUtils.forceCloseKeyboard
@@ -105,6 +103,11 @@ open class FormAdapter(
                     }
                 }
 
+                if(fragment is OptionsFormFragment ||
+                        fragment is ListOptionsFormFragment)
+                    hideKeyboardFrom(fragment.view!!.rootView)
+
+
                 (fragment as? FormPageSelected)?.onPageSelected()
                 (ac as? FormPageSelectedListener)?.onPageSelected(position)
             }
@@ -130,10 +133,11 @@ open class FormAdapter(
 
         list.forEach {
             if (position == it.position)
-                if (it is FormOptionView)
-                    return OptionsFormFragment.newInstance(it)
-                else if (it is FormProductView)
-                    return FormFragment.newInstance(it.position)
+                when (it) {
+                    is FormListOptionView -> return ListOptionsFormFragment.newInstance(it)
+                    is FormOptionView -> return OptionsFormFragment.newInstance(it)
+                    is FormProductView -> return FormFragment.newInstance(it.position)
+                }
         }
 
         throw IllegalStateException("not implemented $position")
@@ -194,19 +198,27 @@ class FormProductView(
     val typeKeyboard: Int = InputTypeUtils.TEXT
 ) : FormView(position, title, nameButton)
 
-class FormOptionView(
+open class FormOptionView(
     position: Int,
     title: String,
     nameButton: String,
     val listOptions: Array<OptionsFormEntity>
 ) : FormView(position, title, nameButton) {
 
-    fun getOptionSelected() : OptionsFormEntity? {
-        listOptions.forEach { if(it.isChecked) return it }
+    fun getOptionSelected(): OptionsFormEntity? {
+        listOptions.forEach { if (it.isChecked) return it }
 
         return null
     }
 }
+
+class FormListOptionView(
+    position: Int,
+    title: String,
+    nameButton: String,
+    listOptions: Array<OptionsFormEntity>
+) : FormOptionView(position, title, nameButton, listOptions)
+
 
 open class FormView(
     val position: Int,
