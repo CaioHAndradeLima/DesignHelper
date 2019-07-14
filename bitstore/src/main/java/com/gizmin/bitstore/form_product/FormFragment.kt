@@ -26,6 +26,7 @@ open class FormFragment : Fragment(), TextWatcher {
             val args = Bundle()
             args.putInt(EXTRA_POSITION, position)
             fpf.arguments = args
+            fpf.focusEditText = position == 0
             return fpf as T
         }
 
@@ -44,6 +45,9 @@ open class FormFragment : Fragment(), TextWatcher {
             throw IllegalStateException()
         }
 
+    private var focusEditText = false
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_form_product, container, false)
 
@@ -51,7 +55,6 @@ open class FormFragment : Fragment(), TextWatcher {
         textViewTitle = view.findViewById(R.id.txt_title)
         button = view.findViewById(R.id.button)
         editText.inputType = formView.typeKeyboard
-
 
         button.setOnClickListener {
             if (button.isEnabled) {
@@ -61,6 +64,9 @@ open class FormFragment : Fragment(), TextWatcher {
 
         textViewTitle.text = formView.title
         button.text = formView.nameButton
+
+        if(focusEditText)
+            editText.requestFocus()
 
         editText.addTextChangedListener(this)
 

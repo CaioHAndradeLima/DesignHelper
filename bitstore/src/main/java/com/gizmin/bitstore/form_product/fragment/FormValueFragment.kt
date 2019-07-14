@@ -5,6 +5,8 @@ import android.view.View
 import com.gizmin.bitstore.form_product.FormFragment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.TypedValue
+import androidx.core.content.ContextCompat
 import java.text.NumberFormat
 import java.util.*
 
@@ -13,6 +15,8 @@ class FormValueFragment : FormFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        editText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 28F)
+        editText.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark))
         editText.addTextChangedListener(object : TextWatcher {
 
 
