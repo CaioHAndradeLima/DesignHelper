@@ -136,6 +136,8 @@ open class FormAdapter(
                 when (it) {
                     is FormListOptionView -> return ListOptionsFormFragment.newInstance(it)
                     is FormOptionView -> return OptionsFormFragment.newInstance(it)
+
+                    is FormValueView -> return FormValueFragment.newInstance(it.position)
                     is FormProductView -> return FormFragment.newInstance(it.position)
                 }
         }
@@ -190,13 +192,20 @@ interface FormAdapterFunctions {
     fun getPositionToBackWhenTouchedInBack(currentPosition: Int): Int
 }
 
-class FormProductView(
+open class FormProductView(
     position: Int,
     title: String,
     nameButton: String,
     val validation: (sequence: String) -> Boolean,
     val typeKeyboard: Int = InputTypeUtils.TEXT
 ) : FormView(position, title, nameButton)
+
+class FormValueView(
+    position: Int,
+    title: String,
+    nameButton: String,
+    validation: (sequence: String) -> Boolean
+) : FormProductView(position, title, nameButton, validation,InputTypeUtils.NUMBER)
 
 open class FormOptionView(
     position: Int,

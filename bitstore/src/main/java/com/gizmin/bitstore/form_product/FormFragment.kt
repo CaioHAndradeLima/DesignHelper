@@ -16,18 +16,19 @@ import com.gizmin.bitstore.form_product.utils.clickForm
 import com.gizmin.bitstore.form_product.utils.updateButtonStatus
 import java.lang.IllegalStateException
 
-class FormFragment : Fragment(), TextWatcher {
+open class FormFragment : Fragment(), TextWatcher {
 
     companion object {
         private const val EXTRA_POSITION = "EP"
 
-        fun newInstance(position: Int): FormFragment {
-            val fpf = FormFragment()
+        fun <T : FormFragment> newInstance(position: Int, fragment: T? = null): T {
+            val fpf = fragment ?: FormFragment()
             val args = Bundle()
             args.putInt(EXTRA_POSITION, position)
             fpf.arguments = args
-            return fpf
+            return fpf as T
         }
+
     }
 
     lateinit var editText: EditText

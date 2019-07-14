@@ -10,7 +10,7 @@ import com.gizmin.bitstore.form_product.*
 import com.gizmin.bitstore.form_product.fragment.OptionsFormEntity
 import com.gizmin.bitstore.form_product.fragment.OptionsFormFragment
 import androidx.viewpager.widget.PagerAdapter
-
+import com.gizmin.bitstore.form_product.fragment.FormValueFragment
 
 
 class MainActivity : AppCompatActivity(), FormMethods {
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity(), FormMethods {
         list.add(FormProductView(0, "Qual o nome de quem você irá transferir?", "Continuar", { true }))
         list.add(FormListOptionView(3, "Escolha a opcao?", "Continuar", options))
         list.add(FormProductView(4, "teste?", "Continuar", { true }))
+        list.add(FormValueView(5, "teste 3","continuar", {true}))
 
 
         return list.toTypedArray()
