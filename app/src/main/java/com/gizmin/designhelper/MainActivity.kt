@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerCustomDuration
 import com.gizmin.bitstore.form_product.*
 import com.gizmin.bitstore.form_product.fragment.OptionsFormEntity
 import com.gizmin.bitstore.form_product.fragment.OptionsFormFragment
-import androidx.viewpager.widget.PagerAdapter
-import com.gizmin.bitstore.camera.AndroidCameraApi
-import com.gizmin.bitstore.form_product.fragment.FormValueFragment
 
 
 class MainActivity : AppCompatActivity(), FormMethods {
@@ -20,9 +18,8 @@ class MainActivity : AppCompatActivity(), FormMethods {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        FormAdapter.init(this, CustomAdapter(getListFormView(), this))
 
-        startActivity(Intent(this, AndroidCameraApi::class.java))
+        FormAdapter.init(this, CustomAdapter(getListFormView(), this))
     }
 
     private val options = arrayOf(
@@ -34,11 +31,13 @@ class MainActivity : AppCompatActivity(), FormMethods {
 
     override fun getListFormView(): Array<FormView> {
         val list = mutableListOf<FormView>()
-        list.add(FormOptionView(1, "O que você está sentindo?", "Continuar", options))
         list.add(FormProductView(0, "Qual o nome de quem você irá transferir?", "Continuar", { true }))
-        list.add(FormListOptionView(3, "Escolha a opcao?", "Continuar", options))
-        list.add(FormProductView(4, "teste?", "Continuar", { true }))
-        list.add(FormValueView(5, "teste 3","continuar", {true}))
+        list.add(FormListOptionView(1, "Escolha a opcao?", "Continuar", options))
+        list.add(FormPhotoView(3, "Agora precisamos de uma foto", "Continuar"))
+        list.add(FormShowPhotoView(4, "a foto esta boa?", "Continuar"))
+        list.add(FormProductView(5, "teste?", "Continuar", { true }))
+        list.add(FormOptionView(6, "O que você está sentindo?", "Continuar", options))
+
 
 
         return list.toTypedArray()
@@ -57,12 +56,13 @@ class MainActivity : AppCompatActivity(), FormMethods {
         )
             super.onBackPressed()
     }
+
 }
 
 class CustomAdapter(list: Array<FormView>, ac: AppCompatActivity) : FormAdapter(list, ac) {
 
     override fun getItem(position: Int): Fragment {
-        if (position == 1) {
+        if (position == 6) {
             return CustomOption.newInstance(list[0] as FormOptionView)
         }
 

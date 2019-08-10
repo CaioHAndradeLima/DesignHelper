@@ -12,5 +12,6 @@
     <string name="without_connection">Sem conexão</string>
     <string name="without_connection_description">Verifique a conectividade</string>
     <string name="activity_photo_title">Novo Produto</string>
+    <string name="make_photo">tirar foto</string>
 
 </resources>

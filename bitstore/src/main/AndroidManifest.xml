@@ -10,6 +10,7 @@
             android:label="@string/app_name"
             android:supportsRtl="true">
 
-            <activity android:name=".camera.AndroidCameraApi"/>
+            <activity android:name=".camera.Camera2Activity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 </manifest>

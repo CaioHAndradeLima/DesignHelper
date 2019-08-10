@@ -1,11 +1,14 @@
 package com.gizmin.bitstore.form_product
 
 import android.app.Activity
+import android.os.Parcelable
 import android.view.View
+import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.gizmin.bitstore.R
 import com.gizmin.bitstore.custom_transform.AccordionTransformer
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerCustomDuration
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerUtils.getFragmentBySupportFragmentManager
@@ -16,6 +19,7 @@ import com.gizmin.bitstore.util.KeyboardUtils.forceCloseKeyboard
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.parcel.Parcelize
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
 import java.util.concurrent.TimeUnit
@@ -139,6 +143,9 @@ open class FormAdapter(
 
                     is FormValueView -> return FormValueFragment.newInstance(it.position)
                     is FormProductView -> return FormFragment.newInstance(it.position)
+
+                    is FormPhotoView -> return FormPhotoFragment.newInstance(it.position)
+                    is FormShowPhotoView -> return FormShowPhotoFragment()
                 }
         }
 
@@ -221,6 +228,15 @@ open class FormOptionView(
     }
 }
 
+class FormPhotoView(position: Int,
+                    title: String,
+                    nameButton: String,
+                    @DrawableRes val photo: Int = R.drawable.ic_gallery) : FormView(position, title, nameButton)
+
+class FormShowPhotoView(position: Int,
+                    title: String,
+                    nameButton: String) : FormView(position, title, nameButton)
+
 class FormListOptionView(
     position: Int,
     title: String,
@@ -228,12 +244,12 @@ class FormListOptionView(
     listOptions: Array<OptionsFormEntity>
 ) : FormOptionView(position, title, nameButton, listOptions)
 
-
+@Parcelize
 open class FormView(
     val position: Int,
     val title: String,
     val nameButton: String
-)
+) : Parcelable
 
 interface FormMethods {
     fun getViewPager(): ViewPagerCustomDuration
