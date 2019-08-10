@@ -16,7 +16,7 @@ import com.gizmin.bitstore.form_product.utils.clickForm
 import com.gizmin.bitstore.form_product.utils.updateButtonStatus
 import java.lang.IllegalStateException
 
-open class FormFragment : Fragment(), TextWatcher {
+open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
 
     companion object {
         private const val EXTRA_POSITION = "EP"
@@ -33,9 +33,9 @@ open class FormFragment : Fragment(), TextWatcher {
     }
 
     lateinit var editText: EditText
-    private lateinit var textViewTitle: TextView
-    private lateinit var button: Button
-    private val formView: FormProductView
+    protected lateinit var textViewTitle: TextView
+    protected lateinit var button: Button
+    protected val formView: FormProductView
         get() {
             (activity as FormMethods).getListFormView().forEach {
                 if (arguments!!.getInt(EXTRA_POSITION, 0) == it.position)
@@ -65,7 +65,7 @@ open class FormFragment : Fragment(), TextWatcher {
         textViewTitle.text = formView.title
         button.text = formView.nameButton
 
-        if(focusEditText)
+        if (focusEditText)
             editText.requestFocus()
 
         editText.addTextChangedListener(this)
@@ -75,11 +75,11 @@ open class FormFragment : Fragment(), TextWatcher {
 
     override fun onResume() {
         super.onResume()
-        updateButtonStatus(button, formView.validation.invoke(editText.text.toString()))
+        updateStatusButton(editText.text.toString())
     }
 
     override fun afterTextChanged(s: Editable?) {
-        updateButtonStatus(button, formView.validation.invoke(s.toString()))
+        updateStatusButton(s.toString())
     }
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -87,4 +87,12 @@ open class FormFragment : Fragment(), TextWatcher {
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
     }
+
+    override fun updateStatusButton(text: String) {
+        updateButtonStatus(button, formView.validation.invoke(text))
+    }
+}
+
+interface FormFragmentMethods {
+    fun updateStatusButton(text: String)
 }
