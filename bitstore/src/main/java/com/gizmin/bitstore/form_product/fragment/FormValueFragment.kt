@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
+import java.lang.Double.parseDouble
 import java.text.NumberFormat
 import java.util.*
 
@@ -39,13 +40,15 @@ class FormValueFragment : FormFragment() {
 
                 //Nesse bloco ele monta a maskara para money
 
-                isChanging = true
 
                 val cleanString = s.toString()
 
                     .replace("[$symbolCountry,. ]".toRegex(), "")
 
-                val parsed = java.lang.Double.parseDouble(cleanString.replace(" ", ""))
+                if(cleanString.isEmpty()) return
+                isChanging = true
+
+                val parsed = parseDouble(cleanString.replace(" ", ""))
                 val formatted = NumberFormat.getCurrencyInstance(myLocale).format(parsed / 100)
                 editText.setText(formatted)
                 editText.setSelection(formatted.length)
