@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), FormMethods {
         OptionsFormEntity("option 4")
     )
 
-    override fun getListFormView(): Array<SampleFormView> {
+    override fun getListFormView(): Array<FormView> {
         val list = mutableListOf<FormView>()
         list.add(FormProductView(0, "Qual o nome de quem você irá transferir?", "Continuar", { true }))
         list.add(FormListOptionView(1, "Escolha a opcao?", "Continuar", options))
@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), FormMethods {
 
 }
 
-class CustomAdapter(list: Array<SampleFormView>, ac: AppCompatActivity) : FormAdapter(list, ac) {
+class CustomAdapter(list: Array<FormView>, ac: AppCompatActivity) : FormAdapter(list, ac) {
 
     override fun getItem(position: Int): Fragment {
         if (position == 6) {

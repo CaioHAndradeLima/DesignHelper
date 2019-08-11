@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 
 
 open class FormAdapter(
-    protected var list: Array<SampleFormView>,
+    protected var list: Array<FormView>,
     protected val ac: AppCompatActivity
 ) : FragmentPagerAdapter(
     ac.supportFragmentManager
@@ -191,7 +191,7 @@ open class FormAdapter(
         map[currentItem] = text
     }
 
-    fun notifyListDataChanged(listForm: Array<SampleFormView>) {
+    fun notifyListDataChanged(listForm: Array<FormView>) {
         this.list = listForm
         notifyDataSetChanged()
     }
@@ -207,7 +207,7 @@ open class FormProductView(
     nameButton: String,
     val validation: (sequence: String) -> Boolean,
     val typeKeyboard: Int = InputTypeUtils.TEXT
-) : FormView(position, title, nameButton)
+) : FormWithTitleAndButton(position, title, nameButton)
 
 class FormValueView(
     position: Int,
@@ -221,7 +221,7 @@ open class FormOptionView(
     title: String,
     nameButton: String,
     val listOptions: Array<OptionsFormEntity>
-) : FormView(position, title, nameButton) {
+) : FormWithTitleAndButton(position, title, nameButton) {
 
     fun getOptionSelected(): OptionsFormEntity? {
         listOptions.forEach { if (it.isChecked) return it }
@@ -233,11 +233,11 @@ open class FormOptionView(
 class FormPhotoView(position: Int,
                     title: String,
                     nameButton: String,
-                    @DrawableRes val photo: Int = R.drawable.ic_gallery) : FormView(position, title, nameButton)
+                    @DrawableRes val photo: Int = R.drawable.ic_gallery) : FormWithTitleAndButton(position, title, nameButton)
 
 class FormShowPhotoView(position: Int,
                     title: String,
-                    nameButton: String) : FormView(position, title, nameButton)
+                    nameButton: String) : FormWithTitleAndButton(position, title, nameButton)
 
 class FormListOptionView(
     position: Int,
@@ -246,28 +246,26 @@ class FormListOptionView(
     listOptions: Array<OptionsFormEntity>
 ) : FormOptionView(position, title, nameButton, listOptions)
 
-open class FormView(
+open class FormWithTitleAndButton(
     position: Int,
     val title: String,
     val nameButton: String
-) : SampleFormView(position)
+) :FormView(position)
+
+open class FormView(
+    val position: Int
+)
 
 class FormFragmentView(
     position: Int,
     val fragment: Fragment
-) : SampleFormView(position)
-
-
-@Parcelize
-open class SampleFormView(
-    val position: Int
-) : Parcelable
+) : FormView(position)
 
 
 interface FormMethods {
     fun getViewPager(): ViewPagerCustomDuration
     fun whenFinishedForm(map: HashMap<Int, String>)
-    fun getListFormView(): Array<SampleFormView>
+    fun getListFormView(): Array<FormView>
 }
 
 
