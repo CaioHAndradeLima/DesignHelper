@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit
 
 
 open class FormAdapter(
-    protected var list: Array<FormView>,
+    protected var list: Array<SampleFormView>,
     protected val ac: AppCompatActivity
 ) : FragmentPagerAdapter(
     ac.supportFragmentManager
@@ -146,6 +146,8 @@ open class FormAdapter(
 
                     is FormPhotoView -> return FormPhotoFragment.newInstance(it.position)
                     is FormShowPhotoView -> return FormShowPhotoFragment()
+
+                    is FormFragmentView -> return it.fragment
                 }
         }
 
@@ -189,7 +191,7 @@ open class FormAdapter(
         map[currentItem] = text
     }
 
-    fun notifyListDataChanged(listForm: Array<FormView>) {
+    fun notifyListDataChanged(listForm: Array<SampleFormView>) {
         this.list = listForm
         notifyDataSetChanged()
     }
@@ -244,17 +246,28 @@ class FormListOptionView(
     listOptions: Array<OptionsFormEntity>
 ) : FormOptionView(position, title, nameButton, listOptions)
 
-@Parcelize
 open class FormView(
-    val position: Int,
+    position: Int,
     val title: String,
     val nameButton: String
+) : SampleFormView(position)
+
+class FormFragmentView(
+    position: Int,
+    val fragment: Fragment
+) : SampleFormView(position)
+
+
+@Parcelize
+open class SampleFormView(
+    val position: Int
 ) : Parcelable
+
 
 interface FormMethods {
     fun getViewPager(): ViewPagerCustomDuration
     fun whenFinishedForm(map: HashMap<Int, String>)
-    fun getListFormView(): Array<FormView>
+    fun getListFormView(): Array<SampleFormView>
 }
 
 

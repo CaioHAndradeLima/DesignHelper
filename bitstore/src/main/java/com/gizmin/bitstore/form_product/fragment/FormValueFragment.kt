@@ -54,10 +54,6 @@ class ValueListenerTextWatcher(private val editText: EditText) : TextWatcher {
 
         val myLocale = Locale("pt", "BR")
 
-
-        //Nesse bloco ele monta a maskara para money
-
-
         val cleanString = unmask(s.toString())
 
         if (cleanString.isEmpty()) return
