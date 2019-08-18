@@ -2,20 +2,23 @@ package com.gizmin.designhelper
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerCustomDuration
+import com.gizmin.bitstore.datepicker.ConfigureDatePicker
+import com.gizmin.bitstore.datepicker.DatePickerFragment
+import com.gizmin.bitstore.datepicker.DatePickerResult
 import com.gizmin.bitstore.form_product.*
 import com.gizmin.bitstore.form_product.fragment.OptionsFormEntity
 import com.gizmin.bitstore.form_product.fragment.OptionsFormFragment
 import com.gizmin.bitstore.util.getSpannableString
+import java.util.*
+import kotlin.collections.HashMap
 
 
-class MainActivity : AppCompatActivity(), FormMethods {
-
+class MainActivity : AppCompatActivity(), FormMethods, DatePickerResult {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,6 +26,10 @@ class MainActivity : AppCompatActivity(), FormMethods {
         FormAdapter.init(
             this, CustomAdapter(getListFormView(), this)
         )
+
+        DatePickerFragment
+            .newInstance(this)
+            .show(supportFragmentManager, "TAG")
     }
 
     private val options = arrayOf(
@@ -38,7 +45,8 @@ class MainActivity : AppCompatActivity(), FormMethods {
         val title2 = "nome"
         val title3 = "de quem você irá transferir?"
 
-        val spannableString = getSpannableString(this,
+        val spannableString = getSpannableString(
+            this,
             Pair(title1, R.style.textview1),
             Pair(title2, R.style.textview2),
             Pair(title3, R.style.textview1)
@@ -70,6 +78,20 @@ class MainActivity : AppCompatActivity(), FormMethods {
         )
             super.onBackPressed()
     }
+
+    override fun configureDatePicker(): ConfigureDatePicker? {
+        val oneDay = 86400000
+        val maxDate = Date(Date().time + (oneDay * 7))
+
+        return ConfigureDatePicker(
+            maxDate,
+            Date()
+        )
+    }
+
+    override fun whenConfirmDate(date: Date) {
+    }
+
 
 }
 
@@ -119,6 +141,7 @@ class CustomAdapter(list: Array<FormView>, ac: AppCompatActivity) : FormAdapter(
     fun disableTwoOption() {
         twoOption = false
     }
+
 }
 
 class CustomOption : OptionsFormFragment() {
