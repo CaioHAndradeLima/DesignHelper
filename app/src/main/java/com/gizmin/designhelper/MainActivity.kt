@@ -2,6 +2,7 @@ package com.gizmin.designhelper
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.PagerAdapter
@@ -10,6 +11,7 @@ import com.gizmin.bitstore.custom_view.viewpager.ViewPagerCustomDuration
 import com.gizmin.bitstore.form_product.*
 import com.gizmin.bitstore.form_product.fragment.OptionsFormEntity
 import com.gizmin.bitstore.form_product.fragment.OptionsFormFragment
+import com.gizmin.bitstore.util.getSpannableString
 
 
 class MainActivity : AppCompatActivity(), FormMethods {
@@ -18,7 +20,9 @@ class MainActivity : AppCompatActivity(), FormMethods {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        FormAdapter.init(this, CustomAdapter(getListFormView(), this))
+        FormAdapter.init(
+            this, CustomAdapter(getListFormView(), this)
+        )
     }
 
     private val options = arrayOf(
@@ -29,8 +33,19 @@ class MainActivity : AppCompatActivity(), FormMethods {
     )
 
     override fun getListFormView(): Array<FormView> {
+
+        val title1 = "Qual o"
+        val title2 = "nome"
+        val title3 = "de quem você irá transferir?"
+
+        val spannableString = getSpannableString(this,
+            Pair(title1, R.style.textview1),
+            Pair(title2, R.style.textview2),
+            Pair(title3, R.style.textview1)
+        )
+
         val list = mutableListOf<FormView>()
-        list.add(FormProductView(0, "Qual o nome de quem você irá transferir?", "Continuar", { true }))
+        list.add(FormProductView(0, spannableString, "Continuar", { true }))
         list.add(FormListOptionView(1, "Escolha a opcao?", "Continuar", options))
         list.add(FormPhotoView(3, "Agora precisamos de uma foto", "Continuar"))
         list.add(FormShowPhotoView(4, "a foto esta boa?", "Continuar"))

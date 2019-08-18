@@ -203,7 +203,7 @@ interface FormAdapterFunctions {
 
 open class FormProductView(
     position: Int,
-    title: String,
+    title: CharSequence,
     nameButton: String,
     val validation: (sequence: String) -> Boolean,
     val typeKeyboard: Int = InputTypeUtils.TEXT
@@ -248,7 +248,7 @@ class FormListOptionView(
 
 open class FormWithTitleAndButton(
     position: Int,
-    val title: String,
+    val title: CharSequence,
     val nameButton: String
 ) :FormView(position)
 

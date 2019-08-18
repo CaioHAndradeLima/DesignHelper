@@ -2,6 +2,7 @@ package com.gizmin.bitstore.form_product
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -62,7 +63,12 @@ open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
             }
         }
 
-        textViewTitle.text = formView.title
+        if(formView.title is SpannableString) {
+            textViewTitle.setText(formView.title, TextView.BufferType.SPANNABLE)
+        } else {
+            textViewTitle.text = formView.title
+        }
+
         button.text = formView.nameButton
 
         if (focusEditText)
