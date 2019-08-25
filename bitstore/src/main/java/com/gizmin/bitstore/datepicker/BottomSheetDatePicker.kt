@@ -17,8 +17,6 @@ import com.gizmin.bitstore.R
 import com.gizmin.bitstore.util.DoubleClick
 import com.gizmin.bitstore.util.UtilsDate
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.yanzhenjie.album.mvp.BaseFragment
-import java.lang.Exception
 import java.util.*
 
 class BottomSheetDatePicker : BottomSheetDialogFragment() {
@@ -66,7 +64,7 @@ class BottomSheetDatePicker : BottomSheetDialogFragment() {
             return false
         }
 
-        if(doubleClick.isDoubleClick())
+        if (doubleClick.isDoubleClick())
             return true
 
         if (viewPager.currentItem == 1) {
@@ -109,7 +107,7 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
 enum class Type { FIRST_DATE, SECOND_DATE }
 
-class BottomChosseDateFragment : BaseFragment(), SingleDateAndTimePicker.OnDateChangedListener {
+class BottomChosseDateFragment : Fragment(), SingleDateAndTimePicker.OnDateChangedListener {
     lateinit var type: Type
 
     lateinit var button: Button
@@ -150,7 +148,7 @@ class BottomChosseDateFragment : BaseFragment(), SingleDateAndTimePicker.OnDateC
             textViewTitle = view.findViewById(R.id.txt_title)
             dateView = view.findViewById(R.id.singledatapicker)
             view
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             null
         }
     }
@@ -181,7 +179,8 @@ class BottomChosseDateFragment : BaseFragment(), SingleDateAndTimePicker.OnDateC
             if (dateSelected.after(maxDate) ||
                 (type == Type.SECOND_DATE &&
                         ::minDate.isInitialized &&
-                        dateSelected.before(minDate))) {
+                        dateSelected.before(minDate))
+            ) {
                 return@setOnClickListener
             }
 
@@ -213,7 +212,7 @@ class BottomChosseDateFragment : BaseFragment(), SingleDateAndTimePicker.OnDateC
         minDate = UtilsDate.getDateAfterDaysPassedByParam(0.9F, firstDate)
         dateView.maxDate = maxDate
 //        dateView.minDate = firstDate happens bug here
-        dateView.setDefaultDate( maxDate )
+        dateView.setDefaultDate(maxDate)
     }
 }
 
