@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.gizmin.bitstore.custom_view.viewpager.ViewPagerCustomDuration
+import com.gizmin.bitstore.datepicker.BottomSheetDatePicker
 import com.gizmin.bitstore.datepicker.ConfigureDatePicker
 import com.gizmin.bitstore.datepicker.DatePickerFragment
 import com.gizmin.bitstore.datepicker.DatePickerResult
@@ -27,11 +28,11 @@ class MainActivity : AppCompatActivity(), FormMethods, DatePickerResult {
         FormAdapter.init(
             this, CustomAdapter(getListFormView(), this)
         )
-/*
-        DatePickerFragment
-            .newInstance(this)
+        //DatePickerFragment
+        BottomSheetDatePicker
+            .newInstance()
             .show(supportFragmentManager, "TAG")
-            */
+
     }
 
     private val options = arrayOf(
@@ -55,7 +56,16 @@ class MainActivity : AppCompatActivity(), FormMethods, DatePickerResult {
         )
 
         val list = mutableListOf<FormView>()
-        list.add(FormProductView(0, spannableString, "Continuar", { it.length > 15 }, InputTypeUtils.NUMBER,FormMask.CPFAndCNPJ))
+        list.add(
+            FormProductView(
+                0,
+                spannableString,
+                "Continuar",
+                { it.length > 15 },
+                InputTypeUtils.NUMBER,
+                FormMask.CPFAndCNPJ
+            )
+        )
         list.add(FormListOptionView(1, "Escolha a opcao?", "Continuar", options))
         list.add(FormPhotoView(3, "Agora precisamos de uma foto", "Continuar"))
         list.add(FormShowPhotoView(4, "a foto esta boa?", "Continuar"))

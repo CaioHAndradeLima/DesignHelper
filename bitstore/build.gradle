@@ -66,6 +66,7 @@ dependencies {
     implementation applicationDependencies.retrofit
     implementation applicationDependencies.glide
     implementation 'com.afollestad:date-picker:0.6.1'
+    implementation 'com.github.florent37:singledateandtimepicker:2.1.4'
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'com.github.CaioHenriqueAndrade:auxiliarPhoto:1.0.9'
