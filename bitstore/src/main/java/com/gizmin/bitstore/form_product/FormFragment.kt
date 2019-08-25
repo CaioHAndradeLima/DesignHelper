@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.gizmin.bitstore.R
+import com.gizmin.bitstore.form_product.mask_utils.CpfCnpjMask
 import com.gizmin.bitstore.form_product.utils.clickForm
 import com.gizmin.bitstore.form_product.utils.updateButtonStatus
 import java.lang.IllegalStateException
@@ -76,6 +77,9 @@ open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
 
         editText.addTextChangedListener(this)
 
+        if(formView.mask == FormMask.CPFAndCNPJ) {
+            CpfCnpjMask.insertTextWatcher(editText)
+        }
         return view
     }
 
@@ -85,7 +89,11 @@ open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
     }
 
     override fun afterTextChanged(s: Editable?) {
-        updateStatusButton(s.toString())
+        val text = when(formView.mask) {
+            FormMask.CPFAndCNPJ -> CpfCnpjMask.unmask(s.toString())
+            else -> s.toString()
+        }
+        updateStatusButton(text)
     }
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {

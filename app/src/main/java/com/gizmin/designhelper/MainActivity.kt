@@ -13,6 +13,7 @@ import com.gizmin.bitstore.datepicker.DatePickerResult
 import com.gizmin.bitstore.form_product.*
 import com.gizmin.bitstore.form_product.fragment.OptionsFormEntity
 import com.gizmin.bitstore.form_product.fragment.OptionsFormFragment
+import com.gizmin.bitstore.form_product.utils.InputTypeUtils
 import com.gizmin.bitstore.util.getSpannableString
 import java.util.*
 import kotlin.collections.HashMap
@@ -26,10 +27,11 @@ class MainActivity : AppCompatActivity(), FormMethods, DatePickerResult {
         FormAdapter.init(
             this, CustomAdapter(getListFormView(), this)
         )
-
+/*
         DatePickerFragment
             .newInstance(this)
             .show(supportFragmentManager, "TAG")
+            */
     }
 
     private val options = arrayOf(
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity(), FormMethods, DatePickerResult {
         )
 
         val list = mutableListOf<FormView>()
-        list.add(FormProductView(0, spannableString, "Continuar", { true }))
+        list.add(FormProductView(0, spannableString, "Continuar", { it.length > 15 }, InputTypeUtils.NUMBER,FormMask.CPFAndCNPJ))
         list.add(FormListOptionView(1, "Escolha a opcao?", "Continuar", options))
         list.add(FormPhotoView(3, "Agora precisamos de uma foto", "Continuar"))
         list.add(FormShowPhotoView(4, "a foto esta boa?", "Continuar"))

@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 
 object ViewPagerUtils {
-    fun getRexexToGetFragmentInFragmentManager(viewPager : ViewPager, position : Int): String {
+    private fun getRexexToGetFragmentInFragmentManager(viewPager : ViewPager, position : Int): String {
         return "android:switcher:${viewPager.id}:${(viewPager.adapter as FragmentPagerAdapter).getItemId(position)}"
     }
 

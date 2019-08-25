@@ -206,8 +206,13 @@ open class FormProductView(
     title: CharSequence,
     nameButton: String,
     val validation: (sequence: String) -> Boolean,
-    val typeKeyboard: Int = InputTypeUtils.TEXT
+    val typeKeyboard: Int = InputTypeUtils.TEXT,
+    val mask: FormMask = FormMask.NONE
 ) : FormWithTitleAndButton(position, title, nameButton)
+
+enum class FormMask {
+    NONE, CPFAndCNPJ
+}
 
 class FormValueView(
     position: Int,

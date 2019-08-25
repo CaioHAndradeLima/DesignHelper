@@ -16,7 +16,8 @@ object CpfCnpjMask {
         return s.replace("[^0-9]*".toRegex(), "")
     }
 
-    fun insertTextWatcher(editText: EditText) {
+    fun insertTextWatcher(editText: EditText, isCPF : Boolean = true) {
+        this.isCPF = isCPF
         val txtWatcher = object : TextWatcher {
             var isUpdating: Boolean = false
             var old = ""
@@ -72,7 +73,7 @@ object CpfCnpjMask {
 
 
     private fun getDefaultMask(str: String): String {
-        return if(isCPF) maskCPF else maskCNPJ
+        return if(str.length < 12) maskCPF else maskCNPJ
     }
 
     fun setMaskCPF(isCpf : Boolean) {
