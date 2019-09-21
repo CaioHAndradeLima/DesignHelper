@@ -56,6 +56,7 @@ open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
         editText = view.findViewById(R.id.edittext)
         textViewTitle = view.findViewById(R.id.txt_title)
         button = view.findViewById(R.id.button)
+        editText.setText(formView.textToEditText)
         editText.inputType = formView.typeKeyboard
 
         button.setOnClickListener {

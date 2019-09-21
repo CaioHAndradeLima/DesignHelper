@@ -63,7 +63,8 @@ class MainActivity : AppCompatActivity(), FormMethods, DatePickerResult {
                 "Continuar",
                 { it.length > 15 },
                 InputTypeUtils.NUMBER,
-                FormMask.CPFAndCNPJ
+                FormMask.CPFAndCNPJ,
+                "Ola tudo bem"
             )
         )
         list.add(FormListOptionView(1, "Escolha a opcao?", "Continuar", options))

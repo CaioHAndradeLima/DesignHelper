@@ -207,7 +207,8 @@ open class FormProductView(
     nameButton: String,
     val validation: (sequence: String) -> Boolean,
     val typeKeyboard: Int = InputTypeUtils.TEXT,
-    val mask: FormMask = FormMask.NONE
+    val mask: FormMask = FormMask.NONE,
+    var textToEditText:String = ""
 ) : FormWithTitleAndButton(position, title, nameButton)
 
 enum class FormMask {
