@@ -10,15 +10,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.gizmin.bitstore.R
 import com.gizmin.bitstore.form_product.mask_utils.CpfCnpjMask
 import com.gizmin.bitstore.form_product.utils.clickForm
 import com.gizmin.bitstore.form_product.utils.updateButtonStatus
-import java.lang.IllegalStateException
 
-open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
+open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods, FormPageSelected {
+
 
     companion object {
         private const val EXTRA_POSITION = "EP"
@@ -65,7 +64,7 @@ open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
             }
         }
 
-        if(formView.title is SpannableString) {
+        if (formView.title is SpannableString) {
             textViewTitle.setText(formView.title, TextView.BufferType.SPANNABLE)
         } else {
             textViewTitle.text = formView.title
@@ -78,10 +77,15 @@ open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
 
         editText.addTextChangedListener(this)
 
-        if(formView.mask == FormMask.CPFAndCNPJ) {
+        if (formView.mask == FormMask.CPFAndCNPJ) {
             CpfCnpjMask.insertTextWatcher(editText)
         }
         return view
+    }
+
+    override fun onPageSelected() {
+        if (::editText.isInitialized)
+            editText.requestFocus()
     }
 
     override fun onResume() {
@@ -90,7 +94,7 @@ open class FormFragment : Fragment(), TextWatcher, FormFragmentMethods {
     }
 
     override fun afterTextChanged(s: Editable?) {
-        val text = when(formView.mask) {
+        val text = when (formView.mask) {
             FormMask.CPFAndCNPJ -> CpfCnpjMask.unmask(s.toString())
             else -> s.toString()
         }
