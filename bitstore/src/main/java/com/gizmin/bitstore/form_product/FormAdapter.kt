@@ -224,7 +224,7 @@ class FormValueView(
 
 open class FormOptionView(
     position: Int,
-    title: String,
+    title: CharSequence,
     nameButton: String,
     val listOptions: Array<OptionsFormEntity>
 ) : FormWithTitleAndButton(position, title, nameButton) {

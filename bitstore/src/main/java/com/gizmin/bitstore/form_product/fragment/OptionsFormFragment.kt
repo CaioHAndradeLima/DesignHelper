@@ -1,6 +1,7 @@
 package com.gizmin.bitstore.form_product.fragment
 
 import android.os.Bundle
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,8 +32,8 @@ open class OptionsFormFragment : Fragment(), View.OnClickListener {
             return newInstance(formOptions, options)
         }
 
-        fun <T : OptionsFormFragment> newInstance(formOptions: FormOptionView, fragment : T ): T {
-            val arguments = if(fragment.arguments == null) Bundle() else fragment.arguments!!
+        fun <T : OptionsFormFragment> newInstance(formOptions: FormOptionView, fragment: T): T {
+            val arguments = if (fragment.arguments == null) Bundle() else fragment.arguments!!
             arguments.putString(EXTRA_OPTIONS, Gson().toJson(formOptions))
             fragment.formOptions = formOptions
             fragment.arguments = arguments
@@ -63,7 +64,12 @@ open class OptionsFormFragment : Fragment(), View.OnClickListener {
             updateButton(true)
         }
 
-        textViewTitle.text = formOptions.title
+        if (formOptions.title is SpannableString) {
+            textViewTitle.setText(formOptions.title, TextView.BufferType.SPANNABLE)
+        } else {
+            textViewTitle.text = formOptions.title
+        }
+
         button.text = formOptions.nameButton
 
         button.setOnClickListener(this)
@@ -87,8 +93,8 @@ open class OptionsFormFragment : Fragment(), View.OnClickListener {
 
 data class OptionsFormEntity(
     val optionName: String,
-    val id : Int = 0
+    val id: Int = 0
 ) {
     var isChecked: Boolean = false
-    internal set
+        internal set
 }
